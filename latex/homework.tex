@@ -1,0 +1,122 @@
+%!TEX program = xelatex
+\documentclass[lang=cn,12pt]{elegantpaper}
+\usepackage{Onns}
+\title{概率图模型}
+\date{\today}
+
+\author{刘潘}
+\university{厦门大学}
+\academy{信息科学与技术学院}
+\majorin{计算机技术专业}
+\grade{2018级研究生}
+\course{机器学习}
+\xmuid{23020181154229}
+\titlenote{}
+
+\begin{document}
+
+\titleN
+
+\section*{问题一}
+
+\subsection*{解答}
+
+\begin{enumerate}
+	\item \begin{align}
+		p(v,h) = \frac{1}{Z}exp\left\{ -E(v,h) \right\}
+	\end{align}
+	
+	\begin{align}
+		E(v,h) & = -v^TWh-a^Tv-b^Th \\
+		 & = -\sum_i\sum_jh_iW_{ji}v_j - \sum_ja_jv_j - \sum_ib_ih_i
+	\end{align}
+	
+	\begin{align*}
+		E(v,h) & = -v^TWh-a^Tv-b^Th \\
+		 & = -\sum_i\sum_jh_iW_{ji}v_j - \sum_ja_jv_j - \sum_ib_ih_i
+	\end{align*}
+	
+	\begin{align*}
+		Z = \sum_{v,h}exp \left\{-E(v,h) \right\}
+	\end{align*}
+	
+	\begin{align*}
+		h_{-k} = (h1,h2,\cdots,h_{k-1},h_{k+1},\cdots,h_{n_k})^T
+	\end{align*}
+	
+	\begin{align*}
+		\alpha_k(v) = b_k + \sum_jW_{jk}v_j
+	\end{align*}
+	
+	\begin{align*}
+		\beta(v,h_{-k}) = \sum_ja_jv_j + \sum_{i-1,i\neq k} b_ih_i + \sum_{i,i\neq k} \sum_jh_iW_{ji}v_j 
+	\end{align*}
+	
+	\begin{align*}
+		E(v,h) = - \beta(v,h_{-k}) - h_k \alpha_k(v)
+	\end{align*}
+	
+	
+	\begin{align*}
+		p(h_i=1|v) & = p(h_i=1|h_{-i},v)  \\
+		& = \frac{p(h_i=1,h_{-i},v)}{p(h_{-i},v)}  \\
+		& = \frac{p(h_i=1,h_{-i},v)}{p(h_i=1,h_{-i},v) + p(h_i=0,h_{-i},v)}  \\
+		& = \frac{exp\left\{ -E(h_i=1,h_{-i},v)\right\}}{exp\left\{ -E(h_i=1,h_{-i},v)\right\} + exp\left\{ -E(h_i=0,h_{-i},v)\right\}}  \\
+		& = \frac{1}{exp\left\{ -E(h_i=1,h_{-i},v)  + E(h_i=0,h_{-i},v)\right\}}  \\
+		& = \frac{1}{ 1+ exp\left\{ \beta(v,h_{-i}) + 0\cdot \alpha_i(v) - \beta(v,h_{-i}) - 1\cdot \alpha_i(v) \right\}}  \\
+		& = \frac{1}{ 1+ exp\left\{ -\alpha_i(v) \right\}}  \\
+	\end{align*}
+
+	\item \begin{align*}
+	p(v|h) = \prod_ip(v_j|h)
+	\end{align*}
+
+	\item \begin{align*}
+		p(h) & = \sum_vp(v,h) \\
+		& = \frac{1}{Z}\sum_v exp \left\{-E(v,h) \right\} \\
+		& = \frac{1}{Z}\sum_v exp \left\{ \sum_ja_jv_j + \sum_i b_ih_i + \sum_i \sum_jh_iW_{ji}h_j  \right\} \\
+		& = \frac{1}{Z}\sum_{v_1}\sum_{v_2}\cdots\sum_{v_{n_v}} exp \left\{ \sum_i b_ih_i \right\} exp \left\{ \sum_jv_j \cdot\left(a_j + \sum_ih_iW_{ji}h_j\right) \right\} \\
+		& = \frac{1}{Z} exp \left\{ \sum_i b_ih_i \right\} \sum_{v_1}\sum_{v_2}\cdots\sum_{v_{n_v}}  exp \left\{ \sum_jv_j \cdot\left(a_j + \sum_ih_iW_{ji}h_j\right) \right\} \\
+		& = \frac{1}{Z} exp \left\{ \sum_i b_ih_i \right\} \sum_{v_1}exp \left\{ v_1 \cdot \left(a_1 + \sum_ih_iW_{1i}h_j \right) \right\} \sum_{v_2}exp \left\{ v_2 \cdot \left(a_2 + \sum_ih_iW_{2i}h_j \right) \right\} \cdots \\ 
+		& \sum_{v_{n_v}}exp \left\{ v_{n_v} \cdot \left(a_{n_v} + \sum_ih_iW_{n_vi}h_j \right) \right\}\\
+		& = \frac{1}{Z} exp \left\{ \sum_i b_ih_i \right\} \prod_j\sum_{v_j}exp \left\{ v_j \cdot \left(a_j + \sum_ih_iW_{ji}h_j \right) \right\} \\ 
+		& = \frac{1}{Z} \prod_i exp \left\{ b_ih_i \right\} \prod_j \left[ exp \left\{ 0 \cdot \left(a_j + \sum_ih_iW_{ji}h_j \right) \right\} + exp \left\{ 1 \cdot \left(a_j + \sum_ih_iW_{ji}h_j \right) \right\} \right]\\ 
+		& = \frac{1}{Z} \prod_i exp \left\{ b_ih_i \right\} \prod_j \left[ 1 + exp \left\{ a_j + \sum_ih_iW_{ji}h_j  \right\} \right]\\ 
+		\end{align*}
+
+		\item 可以
+\end{enumerate}
+
+
+
+\section*{问题二}
+
+\subsection*{解答}
+
+\begin{align*} 
+	arg \mathop{max}\limits_{\mathcal X} p(\mathcal X | \mathcal Y) & = arg \mathop{max}\limits_{\mathcal X} p(\mathcal X , \mathcal Y) \\
+	& = \frac{1}{Z} \left[ \prod_{i=1}^D \phi(x_i,y_i) \right] \left[ \sum_{i \sim j}^D \psi(x_i,y_i) \right] \\
+	& \propto \sum_{i=1}^D \beta x_iy_i + \sum_{i \sim j} \alpha x_ix_j \\
+\end{align*}
+
+\section*{问题三}
+
+\subsection*{解答}
+
+\begin{align*}
+	\mu_{f_1 \rightarrow a}(a) & = \sum_b f_1(a,b)\mu_{b \rightarrow f_1}(b) \\ 
+	\mu_{b \rightarrow f_1}(a) & = \mu_{f_2 \rightarrow b}(b) \\ 
+	\mu_{f_2 \rightarrow b}(b) & = \sum_{c,d}f_2(b,c,d)\mu_{c \rightarrow f_2}(c)\mu_{d \rightarrow f_2}(d) \\ 
+	\mu_{c \rightarrow f_2}(c) & = \mu_{f_3 \rightarrow c}(c) \\
+	\mu_{f_3 \rightarrow c}(c) & = f_3(c) \\
+	\mu_{d \rightarrow f_2}(d) & = \mu_{f_5 \rightarrow d}(d)\mu_{f_4 \rightarrow d}(d) \\
+	\mu_{f_5 \rightarrow d}(d) & = f_5(d) \\
+	\mu_{f_4 \rightarrow d}(d) & = \sum_ef_4(d,e)\mu_{e \rightarrow f_4}(e) \\
+	\mu_{e \rightarrow f_4}(e) & = 1
+\end{align*}
+
+% \nocite{*}
+% \bibliographystyle{unsrt}
+% \bibliography{reference}
+
+\end{document}
